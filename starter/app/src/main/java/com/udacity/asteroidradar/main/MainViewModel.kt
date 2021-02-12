@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.NasaAsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import kotlinx.coroutines.launch
@@ -21,9 +22,35 @@ class MainViewModel : ViewModel() {
     val asteroids: LiveData<List<Asteroid>>
         get() = _asteroids
 
+    private val _potd = MutableLiveData<PictureOfDay>()
+
+    val potd: LiveData<PictureOfDay>
+        get() = _potd
 
     init {
         getAsteroids() //TODO MERVE belki filtreli olur
+        getPictureOfDay()
+    }
+
+    private fun getPictureOfDay() {
+
+
+        viewModelScope.launch {
+
+            //_status.value = MarsApiStatus.LOADING
+            //TODO MERVE LOADINGLERI DUZELT
+            try {
+
+                val responseBody = NasaAsteroidApi.retrofitService.getPictureOfDay()
+
+                _potd.value = responseBody
+
+            } catch (e: Exception) {
+                // _status.value = MarsApiStatus.ERROR
+                _potd.value = null
+            }
+
+        }
     }
 
     private fun getAsteroids() {

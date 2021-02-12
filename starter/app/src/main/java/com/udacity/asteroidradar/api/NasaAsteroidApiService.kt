@@ -37,13 +37,8 @@ interface NasaAsteroidApiService {
 
 
     @GET("planetary/apod")
-    suspend fun getPictureOfDay(@Query("api_key") apiKey: String): PictureOfDay
+    suspend fun getPictureOfDay(@Query("api_key") apiKey: String = API_KEY): PictureOfDay
 
-    @GET("neo/rest/v1/feed")
-    suspend fun getAsteroidsAsync(
-        @Query("api_key") apiKey: String,
-        @Query("start_date") startDate: String
-    ): ResponseBody
 }
 
 object NasaAsteroidApi {

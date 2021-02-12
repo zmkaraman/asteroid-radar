@@ -24,12 +24,18 @@ class MainFragment : Fragment() {
 
         viewModel.asteroids.observe(this, Observer {
             if (null != it) {
-                Toast.makeText(activity, "Test:" + it.size, Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Asterepid Size:" + it.size, Toast.LENGTH_SHORT).show()
             }
 
         })
 
+        viewModel.potd.observe(this, Observer {
+            if (null != it) {
+                Toast.makeText(activity, "POTD:" + it.title , Toast.LENGTH_SHORT).show()
 
+            }
+
+        })
 
         setHasOptionsMenu(true)
 
