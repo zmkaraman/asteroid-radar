@@ -30,7 +30,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:text="@{asteroid.codename}"
-            android:textColor="@color/default_text_color"
+            android:textAppearance="?textAppearanceHeadline5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title"/>
@@ -43,7 +43,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="@{asteroid.closeApproachDate}"
-            android:textColor="@color/default_text_color"
+            android:textAppearance="?textAppearanceHeadline4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_text"
             tools:text="Description"/>
