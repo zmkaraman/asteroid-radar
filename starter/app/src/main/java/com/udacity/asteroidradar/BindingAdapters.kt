@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar
 
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -7,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.main.AsteroidListAdapter
+import com.udacity.asteroidradar.main.NasaApiStatus
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
@@ -57,4 +59,24 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
     val adapter = recyclerView.adapter as AsteroidListAdapter
     adapter.submitList(data)
+}
+
+@BindingAdapter("nasaApiStatus")
+fun bindStatus(statusImageView: ImageView, nasaApiStatus: NasaApiStatus?) {
+
+    when(nasaApiStatus) {
+        NasaApiStatus.LOADING -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.loading_animation)
+
+        }
+        NasaApiStatus.DONE -> {
+            statusImageView.visibility = View.GONE
+
+        }
+        NasaApiStatus.ERROR -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.ic_connection_error)
+        }
+    }
 }

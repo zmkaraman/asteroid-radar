@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.PictureOfDay
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -36,6 +37,12 @@ interface NasaAsteroidApiService {
 
     @GET("planetary/apod")
     suspend fun getPictureOfDay(@Query("api_key") apiKey: String = API_KEY): PictureOfDay
+
+
+    //TODO MERVE burai düzenle
+    @GET("neo/rest/v1/feed")
+    suspend fun getAstreoidsTest(@Query("start_date") startDate: String,
+                             @Query("api_key") apiKey: String = API_KEY) : Deferred<NetworkAsteroidContainer>
 
 }
 

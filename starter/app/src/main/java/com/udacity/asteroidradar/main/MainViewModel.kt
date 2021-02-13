@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar.main
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,11 +10,16 @@ import com.udacity.asteroidradar.api.NasaAsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
+
+enum class NasaApiStatus { LOADING, ERROR, DONE }
 
 class MainViewModel : ViewModel() {
+
+    private val _status = MutableLiveData<NasaApiStatus>()
+
+    val status: LiveData<NasaApiStatus>
+        get() = _status
 
     private val _asteroids = MutableLiveData<List<Asteroid>>()
 
@@ -42,16 +46,15 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
 
-            //_status.value = MarsApiStatus.LOADING
-            //TODO MERVE LOADINGLERI DUZELT
+            _status.value = NasaApiStatus.LOADING
             try {
 
                 val responseBody = NasaAsteroidApi.retrofitService.getPictureOfDay()
-
                 _potd.value = responseBody
+                _status.value = NasaApiStatus.DONE
 
             } catch (e: Exception) {
-                // _status.value = MarsApiStatus.ERROR
+                _status.value = NasaApiStatus.ERROR
                 _potd.value = null
             }
 
@@ -62,8 +65,7 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch {
 
-            //_status.value = MarsApiStatus.LOADING
-            //TODO MERVE LOADINGLERI DUZELT
+            _status.value = NasaApiStatus.LOADING
             try {
 
                 //TODO MERVE dateler sysdate olacak
@@ -74,11 +76,10 @@ class MainViewModel : ViewModel() {
                     JSONObject(responseBody.string())
                 )
 
-                var size = asteroids.value?.size
+                _status.value = NasaApiStatus.DONE
 
-                //_status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
-                // _status.value = MarsApiStatus.ERROR
+                _status.value = NasaApiStatus.ERROR
                 _asteroids.value = ArrayList()
             }
 
