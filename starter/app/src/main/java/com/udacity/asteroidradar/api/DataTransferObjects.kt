@@ -17,8 +17,8 @@ data class NetworkAsteroid(val id: Long, val codename: String, val closeApproach
                     val isPotentiallyHazardous: Boolean)
 
 
-//TODO MERVE is this necessary
 fun NetworkAsteroidContainer.asDatabaseModel(): Array<DatabaseAsteroid> {
+
     return videos.map {
         DatabaseAsteroid (
             id = it.id,

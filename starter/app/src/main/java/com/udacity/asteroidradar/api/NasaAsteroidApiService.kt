@@ -42,7 +42,7 @@ interface NasaAsteroidApiService {
     //TODO MERVE burai düzenle
     @GET("neo/rest/v1/feed")
     suspend fun getAstreoidsTest(@Query("start_date") startDate: String,
-                             @Query("api_key") apiKey: String = API_KEY) : Deferred<NetworkAsteroidContainer>
+                             @Query("api_key") apiKey: String = API_KEY) : Deferred<ResponseBody>
 
 }
 

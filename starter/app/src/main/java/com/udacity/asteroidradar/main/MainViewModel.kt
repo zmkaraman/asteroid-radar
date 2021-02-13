@@ -1,30 +1,27 @@
 package com.udacity.asteroidradar.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.NasaAsteroidApi
-import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 
 enum class NasaApiStatus { LOADING, ERROR, DONE }
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+
+    private val database = getDatabase(application)
+    private val asteroidRepository = AsteroidRepository(database)
+
 
     private val _status = MutableLiveData<NasaApiStatus>()
-
     val status: LiveData<NasaApiStatus>
         get() = _status
-
-    private val _asteroids = MutableLiveData<List<Asteroid>>()
-
-    val asteroids: LiveData<List<Asteroid>>
-        get() = _asteroids
 
     private val _potd = MutableLiveData<PictureOfDay>()
 
@@ -37,12 +34,17 @@ class MainViewModel : ViewModel() {
         get() = _navigateToSelectedAsteroid
 
     init {
-        getAsteroids() //TODO MERVE belki filtreli olur
         getPictureOfDay()
+
+        viewModelScope.launch {
+            asteroidRepository.refreshAsteroids()
+        }
     }
 
-    private fun getPictureOfDay() {
+    val asteroids = asteroidRepository.asteroids
 
+
+    private fun getPictureOfDay() {
 
         viewModelScope.launch {
 
@@ -61,36 +63,24 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun getAsteroids() {
-
-        viewModelScope.launch {
-
-            _status.value = NasaApiStatus.LOADING
-            try {
-
-                //TODO MERVE dateler sysdate olacak
-                val responseBody = NasaAsteroidApi.retrofitService.getAstreoids(
-                    "2021-02-12")
-
-                _asteroids.value = parseAsteroidsJsonResult(
-                    JSONObject(responseBody.string())
-                )
-
-                _status.value = NasaApiStatus.DONE
-
-            } catch (e: Exception) {
-                _status.value = NasaApiStatus.ERROR
-                _asteroids.value = ArrayList()
-            }
-
-        }
-    }
-
     fun displayAsteroidDetails(asteroid: Asteroid) {
         _navigateToSelectedAsteroid.value = asteroid
     }
 
     fun displayAsteroidDetailsComplete() {
         _navigateToSelectedAsteroid.value = null
+    }
+
+    /**
+     * Factory for constructing MainViewModel with parameter
+     */
+    class Factory(val app: Application) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return MainViewModel(app) as T
+            }
+            throw IllegalArgumentException("Unable to construct viewmodel")
+        }
     }
 }
