@@ -27,6 +27,11 @@ class MainViewModel : ViewModel() {
     val potd: LiveData<PictureOfDay>
         get() = _potd
 
+    private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid>()
+
+    val navigateToSelectedAsteroid: LiveData<Asteroid>
+        get() = _navigateToSelectedAsteroid
+
     init {
         getAsteroids() //TODO MERVE belki filtreli olur
         getPictureOfDay()
@@ -78,5 +83,13 @@ class MainViewModel : ViewModel() {
             }
 
         }
+    }
+
+    fun displayAsteroidDetails(asteroid: Asteroid) {
+        _navigateToSelectedAsteroid.value = asteroid
+    }
+
+    fun displayAsteroidDetailsComplete() {
+        _navigateToSelectedAsteroid.value = null
     }
 }
