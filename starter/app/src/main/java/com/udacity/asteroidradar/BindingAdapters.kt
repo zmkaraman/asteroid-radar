@@ -51,7 +51,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         val context = imgView.context
-        Picasso.with(context).load(imgUri).into(imgView);
+        Picasso.with(context).load(imgUri).error(R.drawable.ic_broken_image).into(imgView);
     }
 }
 

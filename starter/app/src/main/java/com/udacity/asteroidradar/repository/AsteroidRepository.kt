@@ -35,4 +35,16 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
             database.asteroidDao.insertAll(*asteroidList.asDatabaseModel())
         }
     }
+
+    suspend fun deleteAll() {
+        withContext(Dispatchers.IO) {
+
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val date = Calendar.getInstance()
+            date.add(Calendar.DATE, -1)
+            val yesterdaysDate = sdf.format(date)
+
+            database.asteroidDao.deleteOldData(yesterdaysDate)
+        }
+    }
 }

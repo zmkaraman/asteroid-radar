@@ -35,14 +35,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         getPictureOfDay()
-
-        viewModelScope.launch {
-            asteroidRepository.refreshAsteroids()
-        }
+        refreshAsteroids()
     }
 
     val asteroids = asteroidRepository.asteroids
 
+    private fun refreshAsteroids() {
+
+        viewModelScope.launch {
+            _status.value = NasaApiStatus.LOADING
+            try {
+                asteroidRepository.refreshAsteroids()
+                _status.value = NasaApiStatus.DONE
+            } catch (e: Exception) {
+                _status.value = NasaApiStatus.ERROR
+                _potd.value = null
+            }
+        }
+    }
 
     private fun getPictureOfDay() {
 

@@ -14,6 +14,9 @@ interface AsteroidDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg videos: DatabaseAsteroid)
 
+    @Query("delete from databaseasteroid where closeApproachDate= :date")
+    fun deleteOldData(date: String)
+
 }
 
 @Database(entities = [DatabaseAsteroid::class], version = 1)
