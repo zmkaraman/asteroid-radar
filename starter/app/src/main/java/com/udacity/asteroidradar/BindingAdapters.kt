@@ -51,7 +51,15 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
         val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
         val context = imgView.context
-        Picasso.with(context).load(imgUri).error(R.drawable.ic_broken_image).into(imgView);
+        Picasso.with(context).load(imgUri).error(R.drawable.ic_broken_image).into(imgView)
+    }
+}
+
+@BindingAdapter("imageContentDescription")
+fun bindContentDesc(imgView: ImageView, imgTitle: String?) {
+    imgTitle?.let {
+        val context = imgView.context
+        imgView.contentDescription = context.getString(R.string.nasa_picture_of_day_content_description_format, imgTitle)
     }
 }
 

@@ -30,7 +30,8 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{viewModel.potd.url}"
-                android:contentDescription="@{viewModel.potd.title}"
+                app:imageContentDescription="@{viewModel.potd.title}"
+                android:contentDescription="@string/this_is_nasa_s_picture_of_day_showing_nothing_yet"
                 app:srcCompat="@drawable/placeholder_picture_of_day"/>
 
             <TextView
