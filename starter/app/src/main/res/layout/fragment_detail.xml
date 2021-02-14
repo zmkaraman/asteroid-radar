@@ -91,7 +91,7 @@
                             android:layout_marginTop="4dp"
                             android:textAppearance="?textAppearanceHeadline4"
                             app:astronomicalUnitText="@{asteroid.absoluteMagnitude}"
-                            android:contentDescription="TODO"
+                            app:contentDescription="@{String.valueOf(asteroid.absoluteMagnitude)}"
                             tools:text="25.126 au" />
                     </LinearLayout>
 
@@ -121,7 +121,7 @@
                     android:layout_marginTop="4dp"
                     android:textAppearance="?textAppearanceHeadline4"
                     app:kmUnitText="@{asteroid.estimatedDiameter}"
-                    android:contentDescription="TODO"
+                    app:contentDescription="@{String.valueOf(asteroid.estimatedDiameter)}"
                     tools:text="0.82 km" />
 
                 <TextView
@@ -140,7 +140,7 @@
                     android:layout_marginTop="4dp"
                     android:textAppearance="?textAppearanceHeadline4"
                     app:velocityText="@{asteroid.relativeVelocity}"
-                    android:contentDescription="TODO"
+                    app:contentDescription="@{String.valueOf(asteroid.relativeVelocity)}"
                     tools:text="11.9 km/s" />
 
                 <TextView
@@ -159,7 +159,7 @@
                     android:layout_marginTop="4dp"
                     android:textAppearance="?textAppearanceHeadline4"
                     app:astronomicalUnitText="@{asteroid.distanceFromEarth}"
-                    android:contentDescription="TODO"
+                    app:contentDescription="@{String.valueOf(asteroid.distanceFromEarth)}"
                     tools:text="0.0924 au" />
 
             </LinearLayout>
