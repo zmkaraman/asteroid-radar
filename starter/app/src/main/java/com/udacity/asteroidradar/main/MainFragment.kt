@@ -23,6 +23,15 @@ class MainFragment : Fragment() {
 
     private var viewModelAdapter: AsteroidListAdapter? = null
 
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.asteroids.observe(viewLifecycleOwner, Observer<List<Asteroid>> { asteroids ->
+            asteroids?.apply {
+                viewModelAdapter?.asteroids = asteroids
+            }
+        })
+    }*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,6 +65,13 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.show_all_menu -> viewModel.getAllAsteroids()
+            R.id.show_today_menu -> viewModel.getTodaysAsteroids()
+            else -> viewModel.getSavedAsteroids()
+        }
+
         return true
     }
 }

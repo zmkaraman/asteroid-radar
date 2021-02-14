@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
@@ -38,7 +39,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         refreshAsteroids()
     }
 
-    val asteroids = asteroidRepository.asteroids
+    var asteroids = asteroidRepository.asteroids
 
     private fun refreshAsteroids() {
 
@@ -49,7 +50,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _status.value = NasaApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = NasaApiStatus.ERROR
-                _potd.value = null
             }
         }
     }
@@ -92,5 +92,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
+    }
+
+    fun getTodaysAsteroids() {
+        asteroids = asteroidRepository.todaysAsteroids
+    }
+
+    fun getSavedAsteroids() {
+        asteroids = asteroidRepository.asteroids
+    }
+
+    fun getAllAsteroids() {
+        asteroids = asteroidRepository.asteroids
     }
 }
